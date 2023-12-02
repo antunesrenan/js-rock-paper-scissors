@@ -22,14 +22,30 @@
         score.wins = 0;
         score.losses = 0;
         score.ties = 0;
+        localStorage.removeItem('score');
         ">Reset Score</button>
+        <p>
+            brought to you by: gamadex
+        </p>
         <script>
-            const score = {
+            /* localStorage only stores 'string', hence need to transform back 'score' to object type through 'parse' method */
+            let score = JSON.parse(localStorage.getItem('score')) || {
                 wins: 0,
                 losses: 0,
                 ties: 0
             };
 
+            /* if localStorage does not have default value due 'Reset Score' button, it will return null - hence we need to define a default value */
+            /* score === null is the same as checking !score
+            optional:
+            if (!score) {
+                score = {
+                    wins: 0,
+                    losses: 0,
+                    ties: 0
+                }
+            };
+            */
             function pickComputerMove () {
                 const randomNumber = Math.random();
                 
@@ -87,6 +103,10 @@
                 } else if (result === 'Tie.') {
                     score.ties += 1;
                 }
+
+                /* localStorage only stores string type hence need to use stringify to transform object 'score' in string */
+                localStorage.setItem('score', JSON.stringify(score));
+
                 /* note that multi-line string below allows to insert values & create multi-line strings */
                 alert(`You picked ${playerMove}. Computer picked ${computerMove}. ${result}
 Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`);
